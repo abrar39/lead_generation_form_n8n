@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Get Early Access</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Instrument+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:         #f5f2ec;
+      --surface:    #ffffff;
+      --ink:        #1a1714;
+      --muted:      #8a857d;
+      --border:     #e0dbd2;
+      --accent:     #d4522a;
+      --accent-bg:  rgba(212,82,42,0.07);
+      --success:    #2a7d52;
+      --error:      #c0392b;
+    }
+
+    body {
+      font-family: 'Instrument Sans', sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    @media (max-width: 768px) {
+      body { grid-template-columns: 1fr; }
+      .left { display: none; }
+    }
+
+    /* LEFT PANEL */
+    .left {
+      background: var(--ink);
+      padding: 3.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .left::before {
+      content: '';
+      position: absolute;
+      bottom: -80px; right: -80px;
+      width: 400px; height: 400px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    .left::after {
+      content: '';
+      position: absolute;
+      bottom: -120px; right: -120px;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .brand {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: #fff;
+      letter-spacing: -0.01em;
+    }
+    .brand span { color: var(--accent); }
+
+    .left-body { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 3rem 0; }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(212,82,42,0.15);
+      color: #e87a56;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 0.35rem 0.75rem;
+      border-radius: 100px;
+      margin-bottom: 1.5rem;
+      width: fit-content;
+    }
+    .tag::before { content: '●'; font-size: 0.5rem; animation: pulse 1.8s ease infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    .left h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2rem, 3.5vw, 2.8rem);
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.25rem;
+    }
+    .left h2 em { font-style: normal; color: var(--accent); }
+
+    .left p {
+      color: rgba(255,255,255,0.45);
+      font-size: 0.9rem;
+      line-height: 1.7;
+      font-weight: 300;
+      max-width: 320px;
+    }
+
+    .benefits {
+      list-style: none;
+      margin-top: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .benefits li {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.6);
+    }
+    .benefits li::before {
+      content: '✓';
+      width: 20px; height: 20px;
+      background: rgba(212,82,42,0.2);
+      color: #e87a56;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .social-proof { display: flex; align-items: center; gap: 0.75rem; }
+    .avatars { display: flex; }
+    .avatar {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      border: 2px solid var(--ink);
+      background: var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.6rem; font-weight: 700; color: white;
+      margin-left: -8px;
+    }
+    .avatar:first-child { margin-left: 0; }
+    .avatar:nth-child(2) { background: #5a7fd4; }
+    .avatar:nth-child(3) { background: #2a7d52; }
+
+    .proof-text { font-size: 0.75rem; color: rgba(255,255,255,0.4); line-height: 1.4; }
+    .proof-text strong { color: rgba(255,255,255,0.7); }
+
+    /* RIGHT PANEL */
+    .right {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 2.5rem;
+      min-height: 100vh;
+    }
+
+    .form-wrap {
+      width: 100%;
+      max-width: 420px;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(20px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    .form-header { margin-bottom: 2rem; }
+    .form-header .eyebrow {
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+    .form-header h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.7rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+    }
+    .form-header p { margin-top: 0.5rem; font-size: 0.875rem; color: var(--muted); line-height: 1.6; }
+
+    .field { margin-bottom: 1.1rem; }
+
+    label {
+      display: block;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      padding: 0.7rem 0.9rem;
+      font-family: 'Instrument Sans', sans-serif;
+      font-size: 0.92rem;
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      -webkit-appearance: none;
+    }
+
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238a857d' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.9rem center;
+      padding-right: 2.5rem;
+      cursor: pointer;
+    }
+
+    input::placeholder, textarea::placeholder { color: #c8c3bc; }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-bg);
+    }
+
+    input.err, select.err { border-color: var(--error); }
+
+    .err-msg { font-size: 0.72rem; color: var(--error); margin-top: 0.3rem; display: none; }
+    .err-msg.show { display: block; }
+
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    @media (max-width: 420px) { .row { grid-template-columns: 1fr; } }
+
+    .sep { height: 1px; background: var(--border); margin: 1.25rem 0; }
+
+    .btn {
+      width: 100%;
+      padding: 0.85rem;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-family: 'Syne', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn:hover { background: #bb4422; box-shadow: 0 6px 20px rgba(212,82,42,0.3); transform: translateY(-1px); }
+    .btn:active { transform: translateY(0); box-shadow: none; }
+    .btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; box-shadow: none; }
+
+    .btn .txt { transition: opacity 0.2s; }
+    .btn .spin {
+      display: none;
+      width: 17px; height: 17px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.65s linear infinite;
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+    }
+    .btn.loading .txt { opacity: 0; }
+    .btn.loading .spin { display: block; }
+    @keyframes spin { to { transform: translate(-50%,-50%) rotate(360deg); } }
+
+    .toast {
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 500;
+      margin-bottom: 1rem;
+      display: none;
+      text-align: center;
+    }
+    .toast.ok  { display:block; background:rgba(42,125,82,0.1);  color:var(--success); border:1px solid rgba(42,125,82,0.2); }
+    .toast.bad { display:block; background:rgba(192,57,43,0.08); color:var(--error);   border:1px solid rgba(192,57,43,0.18); }
+
+    .fine-print { font-size: 0.7rem; color: var(--muted); text-align: center; margin-top: 1rem; line-height: 1.5; }
+    .fine-print a { color: var(--muted); text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+  <!-- LEFT PANEL -->
+  <div class="left">
+    <div class="brand">grow<span>.</span></div>
+    <div class="left-body">
+      <div class="tag">Limited spots available</div>
+      <h2>Turn visitors into <em>paying customers</em></h2>
+      <p>Join hundreds of teams already using our platform to capture, qualify, and close leads — faster than ever.</p>
+      <ul class="benefits">
+        <li>Instant lead qualification &amp; scoring</li>
+        <li>Seamless CRM &amp; Google Sheets sync</li>
+        <li>Automated follow-up sequences</li>
+        <li>Real-time analytics dashboard</li>
+      </ul>
+    </div>
+    <div class="social-proof">
+      <div class="avatars">
+        <div class="avatar">JD</div>
+        <div class="avatar">MK</div>
+        <div class="avatar">PR</div>
+      </div>
+      <p class="proof-text"><strong>240+ teams</strong> joined this month.<br>Average ROI: 3.4× in 60 days.</p>
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="right">
+    <div class="form-wrap">
+      <div class="form-header">
+        <p class="eyebrow">Start free today</p>
+        <h1>Claim your free account</h1>
+        <p>No credit card required. Set up in under 2 minutes.</p>
+      </div>
+
+      <div id="toast" class="toast"></div>
+
+      <form id="leadForm" novalidate>
+        <div class="row">
+          <div class="field">
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" name="firstName" placeholder="Jane" autocomplete="given-name"/>
+            <div class="err-msg" id="fnErr">Required</div>
+          </div>
+          <div class="field">
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" name="lastName" placeholder="Doe" autocomplete="family-name"/>
+            <div class="err-msg" id="lnErr">Required</div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="email">Work Email</label>
+          <input type="email" id="email" name="email" placeholder="jane@company.com" autocomplete="email"/>
+          <div class="err-msg" id="emErr">Enter a valid email</div>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="phone">Phone</label>
+            <input type="tel" id="phone" name="phone" placeholder="+1 555 000 000" autocomplete="tel"/>
+            <div class="err-msg" id="phErr">Invalid number</div>
+          </div>
+          <div class="field">
+            <label for="company">Company</label>
+            <input type="text" id="company" name="company" placeholder="Acme Inc." autocomplete="organization"/>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="teamSize">Team Size</label>
+          <select id="teamSize" name="teamSize">
+            <option value="" disabled selected>Select…</option>
+            <option value="1">Just me</option>
+            <option value="2-10">2–10 people</option>
+            <option value="11-50">11–50 people</option>
+            <option value="51-200">51–200 people</option>
+            <option value="200+">200+ people</option>
+          </select>
+          <div class="err-msg" id="tsErr">Please select team size</div>
+        </div>
+
+        <div class="sep"></div>
+
+        <button type="submit" class="btn" id="submitBtn">
+          <span class="txt">Get Free Access →</span>
+          <span class="spin"></span>
+        </button>
+
+        <p class="fine-print">By submitting you agree to our <a href="#">Terms</a> &amp; <a href="#">Privacy Policy</a>. We'll never spam you.</p>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // ─── CONFIG ──────────────────────────────────────────────────────────────
+    // Replace with your N8N webhook URL.
+    // Expose localhost with ngrok: ngrok http 5678
+    // Webhook URL format: https://xxxx.ngrok-free.app/webhook/your-path
+    const WEBHOOK_URL = "https://greaseproof-unbigamous-takako.ngrok-free.dev";
+    // ─────────────────────────────────────────────────────────────────────────
+
+    const form  = document.getElementById("leadForm");
+    const btn   = document.getElementById("submitBtn");
+    const toast = document.getElementById("toast");
+
+    function showToast(msg, type) {
+      toast.textContent = msg;
+      toast.className = "toast " + type;
+      toast.scrollIntoView({ behavior:"smooth", block:"nearest" });
+    }
+
+    function fieldErr(inputId, errId, show, msg) {
+      document.getElementById(inputId).classList.toggle("err", show);
+      const e = document.getElementById(errId);
+      if (msg) e.textContent = msg;
+      e.classList.toggle("show", show);
+    }
+
+    function validate(d) {
+      let ok = true;
+      if (!d.firstName) { fieldErr("firstName","fnErr",true,"First name required"); ok=false; } else fieldErr("firstName","fnErr",false);
+      if (!d.lastName)  { fieldErr("lastName","lnErr",true,"Last name required");  ok=false; } else fieldErr("lastName","lnErr",false);
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email)) { fieldErr("email","emErr",true,"Enter a valid work email"); ok=false; } else fieldErr("email","emErr",false);
+      if (d.phone && !/^[\d\s\+\-\(\)]{6,20}$/.test(d.phone)) { fieldErr("phone","phErr",true,"Invalid phone number"); ok=false; } else fieldErr("phone","phErr",false);
+      if (!d.teamSize) { fieldErr("teamSize","tsErr",true,"Please select team size"); ok=false; } else fieldErr("teamSize","tsErr",false);
+      return ok;
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      toast.className = "toast";
+
+      const data = {
+        firstName:   document.getElementById("firstName").value.trim(),
+        lastName:    document.getElementById("lastName").value.trim(),
+        email:       document.getElementById("email").value.trim(),
+        phone:       document.getElementById("phone").value.trim(),
+        company:     document.getElementById("company").value.trim(),
+        teamSize:    document.getElementById("teamSize").value,
+        submittedAt: new Date().toISOString(),
+        source:      document.referrer || "direct",
+      };
+
+      if (!validate(data)) return;
+
+      btn.disabled = true;
+      btn.classList.add("loading");
+
+      try {
+        const res = await fetch(WEBHOOK_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+
+        if (res.ok) {
+          showToast("🎉 You're in! Check your inbox for next steps.", "ok");
+          form.reset();
+        } else {
+          throw new Error("HTTP " + res.status);
+        }
+      } catch (err) {
+        console.error(err);
+        showToast("Something went wrong — please try again.", "bad");
+      } finally {
+        btn.disabled = false;
+        btn.classList.remove("loading");
+      }
+    });
+  </script>
+</body>
+</html>
